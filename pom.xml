@@ -6,6 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
   
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <grpc.version>1.0.0-pre2</grpc.version><!-- CURRENT_GRPC_VERSION -->
   </properties>
 
@@ -32,6 +33,15 @@
   </dependencies>
 
   <build>
+  
+    <resources>
+      <resource>
+        <directory>${project.build.directory}/generated-resources/protobuf/grpc-java</directory>
+      </resource>
+      <resource>
+        <directory>${project.build.directory}/generated-resources/protobuf/java</directory>
+      </resource>
+    </resources>
 
     <extensions>
       <extension>
