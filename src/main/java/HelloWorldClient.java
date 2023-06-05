@@ -1,11 +1,9 @@
 
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -33,28 +31,26 @@ public class HelloWorldClient {
     logger.info("Sending: " + name + " ...");
     
     HelloRequest request = HelloRequest.newBuilder().setName(name).build();    
-    HelloReply response;    
+    HelloReply response1;
+    HelloReply response2;
     try {
-      response = blockingStub.sayHello(request);
+      response1 = blockingStub.sayHello(request);
+      response2 = blockingStub.sayHelloAgain(request);
     } catch (StatusRuntimeException e) {
-      logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+      logger.warning("RPC failed: " + e.getStatus());
       return;
     }
     
-    logger.info("Received (1): " + response.getMessage());    
+    logger.info("Received: " + response1.getMessage());
+    logger.info("Received: " + response2.getMessage());
   }
 
   public static void main(String[] args) throws Exception {
-    
-    /* Access a service running on the local machine on port 50051 */
-    HelloWorldClient client = new HelloWorldClient("localhost", 50051);
-    
+    HelloWorldClient client = new HelloWorldClient("localhost", HelloWorldServer.port);
     try {
       client.greet("Mark");
     } finally {
       client.shutdown();
     }
-    
   }
-  
 }
